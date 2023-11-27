@@ -6,20 +6,20 @@ from customers.schemas.customers import CustomerSchema, CustomerSchemaID, NotFou
 customers_router  = Router()
 
 @customers_router.post('customers/', response={201: CustomerSchema})
-def test(request, paylad: CustomerSchema):
+def create_customer(request, paylad: CustomerSchema):
     paylad = Customer.objects.create(**paylad.dict())
     return paylad
 
 
-@customers_router.get("customers/", response=List[CustomerSchema])
-def tracks(request, title: Optional[str] = None):
+@customers_router.get("customers/", response=List[CustomerSchemaID])
+def retrieve_customers(request, title: Optional[str] = None):
     if title:
         return Customer.objects.filter(title__icontains=title)
     return Customer.objects.all()
 
 
 @customers_router.get("customers/{customer_id}", response={200: CustomerSchemaID, 404: NotFoundSchema})
-def track(request, customer_id: int):
+def retrieve_customer(request, customer_id: int):
     try:
         customer = Customer.objects.get(pk=customer_id)
         return 200, customer
@@ -28,7 +28,7 @@ def track(request, customer_id: int):
     
 
 @customers_router.put("customers/{customer_id}", response={200: CustomerSchemaID, 404: NotFoundSchema})
-def change_track(request, customer_id: int, data: CustomerSchemaID):
+def change_customer(request, customer_id: int, data: CustomerSchemaID):
     try:
         customer = Customer.objects.get(pk=customer_id)
         for attribute, value in data.dict().items():
@@ -40,7 +40,7 @@ def change_track(request, customer_id: int, data: CustomerSchemaID):
     
 
 @customers_router.delete("customers/{customer_id}", response={200: None, 404: NotFoundSchema})
-def delete_track(request, customer_id: int):
+def delete_customer(request, customer_id: int):
     try:
         customer = Customer.objects.get(pk=customer_id)
         customer.delete()
