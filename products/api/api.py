@@ -1,15 +1,25 @@
 from ninja import Router
 from typing import List, Optional
-from products.models import Products
+from products.models import Products, Category
 from products.schemas.products import ProductsSchema, ProductSchemaID, NotFoundSchema
 
 products_router = Router()
 
-@products_router.post("products/", response={201: ProductsSchema})
+@products_router.post("products/", response={201: ProductSchemaID})
 def create_product(request, payload: ProductsSchema):
-    payload = Products.objects.create(**payload.dict())
-    return payload
-
+    
+    product = Products(
+        name=payload.name,
+        description=payload.description,
+        price=payload.price,
+    )
+    product.save()
+    
+    categories = Category.objects.filter(name__in=payload.category)
+    product.category.set(categories)
+    product.save()
+    
+    return product
 
 @products_router.get("products/", response=List[ProductSchemaID])
 def retrieve_products(request, title: Optional[str] = None):

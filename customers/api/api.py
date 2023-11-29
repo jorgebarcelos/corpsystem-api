@@ -6,9 +6,9 @@ from customers.schemas.customers import CustomerSchema, CustomerSchemaID, NotFou
 customers_router  = Router()
 
 @customers_router.post('customers/', response={201: CustomerSchema})
-def create_customer(request, paylad: CustomerSchema):
-    paylad = Customer.objects.create(**paylad.dict())
-    return paylad
+def create_customer(request, payload: CustomerSchema):
+    payload = Customer.objects.create(**payload.dict())
+    return payload
 
 
 @customers_router.get("customers/", response=List[CustomerSchemaID])
