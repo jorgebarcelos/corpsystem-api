@@ -9,5 +9,5 @@ class Order(models.Model):
     quantity = models.IntegerField()
     price = models.FloatField()
 
-    def __str__(self):
-        return f'{Customer.pk}-{Products.pk}-{self.quantity}'
+    def __str__(self) -> str:
+        return f"{self.product_id.filter()} | order: {self.id} | name: {self.customer_id.name} | qtd: {self.quantity}"
