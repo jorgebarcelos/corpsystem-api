@@ -1,4 +1,3 @@
-import os
 from django.conf import settings
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
@@ -7,7 +6,7 @@ from typing import List, Optional
 from order.models import Order
 from products.models import Products
 from customers.models import Customer
-from order.schemas.order import OrderSchema, OrderSchemaID, NotFoundSchema
+from order.schemas.order import OrderSchema, OrderSchemaID
 
 
 order_router = Router()
