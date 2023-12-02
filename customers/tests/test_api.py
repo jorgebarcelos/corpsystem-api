@@ -1,4 +1,5 @@
 from django.test import TestCase
+from customers.models import Customer
 from django.test.client import Client
 from django.urls import reverse
 
@@ -8,7 +9,8 @@ class CustomerTestCase(TestCase):
     def setUp(self):
         self.client = Client()
         self.url = 'http://127.0.0.1:8000/api/v1/customers/customers/'
-
+        self.customer = Customer.objects.create(name="Odair")
+        self.customer_put = Customer.objects.create(name="Fernando")
 
     def test_create_customer(self):
         
@@ -32,14 +34,12 @@ class CustomerTestCase(TestCase):
 
     
     def test_edit_customer(self):
-
-        payload = {"id": 1, "name": "Jorge Barcelos Faria Jr"}
-        response = self.client.put(self.url, data=payload)
+        payload = {"name": "Fernando José"}
+        response = self.client.put(f'{self.url}{self.customer_put.id}', data=payload)
         self.assertEqual(response.status_code, 200)
 
     
     def test_delete_customer(self):
 
-        user_id = {"id": 4,}
-        response = self.client.delete(self.url, user_id)
+        response = self.client.delete(f'{self.url}{self.customer.id}')
         self.assertEqual(response.status_code, 200)

@@ -28,7 +28,7 @@ def retrieve_customer(request, customer_id: int):
     
 
 @customers_router.put("customers/{customer_id}", response={200: CustomerSchemaID, 404: NotFoundSchema})
-def change_customer(request, customer_id: int, data: CustomerSchemaID):
+def change_customer(request, customer_id: int, data: CustomerSchema):
     try:
         customer = Customer.objects.get(pk=customer_id)
         for attribute, value in data.dict().items():
@@ -36,6 +36,7 @@ def change_customer(request, customer_id: int, data: CustomerSchemaID):
         customer.save()
         return 200, customer
     except Customer.DoesNotExist as e:
+        print(customer)
         return 404, {"message": "Could not find customer"}
     
 
