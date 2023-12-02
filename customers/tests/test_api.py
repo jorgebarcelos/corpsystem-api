@@ -35,7 +35,7 @@ class CustomerTestCase(TestCase):
     
     def test_edit_customer(self):
         payload = {"name": "Fernando José"}
-        response = self.client.put(f'{self.url}{self.customer_put.id}', data=payload)
+        response = self.client.put(f'{self.url}{self.customer_put.id}', data=payload, content_type="application/json")
         self.assertEqual(response.status_code, 200)
 
     
