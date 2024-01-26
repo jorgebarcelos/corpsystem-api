@@ -1,3 +1,5 @@
+import json
+from typing import Dict
 from django.conf import settings
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
@@ -30,11 +32,30 @@ def create_order(request, payload: OrderSchema):
     return order
 
 
-@order_router.get('order/', response=List[OrderSchemaID])
+@order_router.get('order/', response=Dict)
 def retrieve_orders(request, title: Optional[str] = None):
     if title:
         return Order.objects.filter(title__icontains=title)
-    return Order.objects.all()
+    orders = Order.objects.all()
+    order = Order.objects.all()
+    
+    for orderer in orders:
+        products = orderer.product_id.all()
+        product_names = []
+        for product in products:
+            product_name = json.dumps(product.name)
+            product_names.append(product_name)
+
+    data = {
+    "id": [pk.pk for pk in order],
+    "customer_id": [customer.customer_id.name for customer in order],
+    "quantity": [quantity.quantity for quantity in order],
+    "price": [price.price for price in order],
+    "product_id": [
+        product_names
+    ]
+}
+    return data
 
 
 @order_router.get('order/{customer_id}', response=List[OrderSchemaID])

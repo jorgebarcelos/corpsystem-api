@@ -14,4 +14,5 @@ class Products(models.Model):
     category = models.ManyToManyField(Category)
 
     def __str__(self) -> str:
-        return f"id: {self.id} | name: {self.name}"
+        return self.name
+        # return f"id: {self.id} | name: {self.name}"

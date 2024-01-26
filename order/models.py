@@ -10,4 +10,13 @@ class Order(models.Model):
     price = models.FloatField()
 
     def __str__(self) -> str:
-        return f"{self.product_id.filter()} | order: {self.id} | name: {self.customer_id.name} | qtd: {self.quantity}"
+        return self.customer_id.name
+
+    
+
+
+        # product_name = ''
+        # for product in products:
+        #     product_name += f'{product.name} '
+
+            # return f"{self.product_id.filter()} | order: {self.id} | name: {self.customer_id.name} | qtd: {self.quantity} {product_name}"
